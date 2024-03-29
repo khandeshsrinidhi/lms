@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Building') {
             steps {
-                sh 'cd webapp && npm install && npm build'
+                sh 'cd webapp && npm install && npm run && run build'
             }
         }
         stage('Test') {
