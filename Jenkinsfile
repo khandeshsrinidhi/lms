@@ -9,7 +9,7 @@ pipeline {
                 sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
             }
         }
-                stage('email notifiation'){
+ /*               stage('email notifiation'){
             steps{
                 emailtext body: 'this is notify that build has been started',
                 subject:'jenkins notification',
@@ -17,7 +17,7 @@ pipeline {
                 attachLog:true
                 
             }
-        }
+        }*/
         stage('Build Frontend'){
             steps{
                 echo 'Building..'
