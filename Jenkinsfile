@@ -20,7 +20,7 @@ pipeline {
                 sh 'cd api && npm install && npm run build'
             }
         }
-        stage('Releasing..'){
+        stage('Releasing...'){
             steps{
                 script{
                     eccho 'releasing..'
