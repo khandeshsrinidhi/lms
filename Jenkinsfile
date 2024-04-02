@@ -17,13 +17,8 @@ pipeline {
             }
         }
 
-
-          
-
-
-
-
-        /*stage('Build Frontend'){
+        
+        stage('Build Frontend'){
             steps{
                 echo 'Building..'
                 sh 'cd webapp && npm install && npm run build'
@@ -35,7 +30,7 @@ pipeline {
                 sh 'cd api && npm install && npm run build'
             }
         }
-        stage('Releasing...'){
+        /*stage('Releasing...'){
             steps{
                 script{
                     eccho 'releasing..'
