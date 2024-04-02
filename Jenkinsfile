@@ -30,7 +30,7 @@ pipeline {
                 sh 'cd api && npm install && npm run build'
             }
         }
-        /*stage('Releasing...'){
+        stage('Releasing...'){
             steps{
                 script{
                     eccho 'releasing..'
@@ -38,7 +38,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echp "${packageJSONVersion}"
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.16.79.201:8081/repository/lms/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.145.188.191:8081/repository/lms/"
 
  
 
@@ -47,6 +47,7 @@ pipeline {
 
             }
         }
+        /*
         stage('deploying'){
             steps{
                 script{
