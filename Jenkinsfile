@@ -12,7 +12,7 @@ pipeline {
             steps {
                 emailext body: 'this is to notify that build job has been started',
                 subject: 'jenkins-notification',
-                to: 'mkdigitalservicesnkl@gmail.com',
+                to: 'khandeshsrinidhi@gmail.com',
                 attachLog: true
             }
         }
