@@ -7,7 +7,7 @@ pipeline {
                 sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://13.58.208.152:9000" -e SONAR_LOGIN="sqa_9997500a0e5e50954b73a8c57af3a06f1d8e4254"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
             }
         }
-        /*stage('email notifiation'){
+        stage('email notifiation'){
             steps{
                 emailtext body: 'this is notify that build has been started',
                 subject:'jenkins notification',
@@ -15,7 +15,7 @@ pipeline {
                 attachLog:true
                 
             }
-        }*/
+        }
         stage('Build Frontend'){
             steps{
                 echo 'Building..'
