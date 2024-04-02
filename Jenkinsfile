@@ -64,6 +64,24 @@ pipeline {
 
             }
         }
+        stage('frontend Releasing...'){
+            steps{
+                script{
+                    echo 'releasing..'
+                    def packageJSON = readJSON file: 'api/package.json'
+                    def packageJSONVersion = packageJSON.version
+                    echo "${packageJSONVersion}"
+                    sh "zip api/dist-${packageJSONVersion}.zip -r api/dist"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file api/dist-${packageJSONVersion}.zip http://3.145.188.191:8081/repository/lms-be/"
+
+ 
+
+                }
+
+
+            }
+        }
+
 
         /*
         stage('deploying'){
