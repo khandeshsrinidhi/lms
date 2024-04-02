@@ -9,14 +9,14 @@ pipeline {
         }
         stage('email notifiation'){
             steps{
-                emailtext body: 'this is notify that build has been started',
-                subject:'jenkins notification',
+                emailext body: 'this is notify that build has been started',
+                subject:'jenkins-notification',
                 to:'khandeshsrinidhi@gmail.com',
                 attachLog:true
                 
             }
         }
-        stage('Build Frontend'){
+        /*stage('Build Frontend'){
             steps{
                 echo 'Building..'
                 sh 'cd webapp && npm install && npm run build'
@@ -28,6 +28,11 @@ pipeline {
                 sh 'cd api && npm install && npm run build'
             }
         }
+        stage('Releasing..'){
+            steps{
+
+            }
+        }*/
 
         }
     }
