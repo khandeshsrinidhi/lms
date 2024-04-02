@@ -33,7 +33,7 @@ pipeline {
         stage('Releasing...'){
             steps{
                 script{
-                    eccho 'releasing..'
+                    echo 'releasing..'
                     def packageJSON = readJSON file: 'webapp/package.json'
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
