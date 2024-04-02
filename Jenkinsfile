@@ -8,6 +8,21 @@ pipeline {
             }
         }
 
+        stage('email notification') {
+            steps {
+                emailext body: 'this is to notify that build job has been started',
+                subject: 'jenkins-notification',
+                to: 'mkdigitalservicesnkl@gmail.com',
+                attachLog: true
+            }
+        }
+
+
+          
+
+
+
+
         /*stage('Build Frontend'){
             steps{
                 echo 'Building..'
