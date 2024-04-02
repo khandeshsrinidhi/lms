@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://13.59.130.130:9000" -e SONAR_LOGIN="sqp_9b1f21432d53d10cf702a3cb996b6471f59bbeb7"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms1'
+                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://13.58.208.152:9000" -e SONAR_LOGIN="sqa_9997500a0e5e50954b73a8c57af3a06f1d8e4254"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
             }
         }
         /*stage('email notifiation'){
