@@ -47,7 +47,7 @@ pipeline {
 
             }
         }
-        stage('Releasing...'){
+        stage('frontend Releasing...'){
             steps{
                 script{
                     echo 'releasing..'
