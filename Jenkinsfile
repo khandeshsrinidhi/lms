@@ -81,7 +81,7 @@ pipeline {
 
             }
         }
-        /*stage('Docker Build ') {
+        stage('Docker Build ') {
             steps{
                 sh 'cd api && docker build -t srinidhi3108/api .'
                 sh 'cd webapp && docker build -t srinidhi/webapp .'
@@ -89,20 +89,10 @@ pipeline {
                 sh 'docker push srinidhi3108/api'
                 sh 'docker push srinidhi3108/webapp'
             }
-        }*/
+        }
 
   
-        environment {
-            DOCKER_CREDENTIALS = credentials('dockerhub')
-            }
-        stages ('Docker-Building') {
-            stage('Build and Push Docker Image') {
-                steps {
-                    script {
-                        docker.withRegistry('https://index.docker.lms/v1/', DOCKER_CREDENTIALS) {
-                            docker.build('srinidhi3108').push()
-
-
+       
 
     
         
