@@ -81,6 +81,17 @@ pipeline {
 
             }
         }
+        stage('Docker Build ') {
+            steps{
+                sh 'cd api && docker build -t srinidhi3108/api .'
+                sh'cd webapp && docker build -t srinidhi/webapp .'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u
+                $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push srinidhi3108/api'
+                sh 'docker push srinidhi3108/webapp'
+            }
+
+}
 
 
         /*
