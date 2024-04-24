@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+    dockerhub=credentials('dockerhub')
+    }
     
     stages {
         stage('Testing') {
@@ -81,9 +84,7 @@ pipeline {
 
             }
         }
-        environment {
-            dockerhub=credentials('dockerhub')
-        }
+       
         stage('docker building...'){
             steps{
                 sh 'docker build -t srinidhi3108/lms .'
