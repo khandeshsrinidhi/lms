@@ -38,7 +38,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.224.33.125:8081/repository/lms/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.16.47.141:8081/repository/lms/"
 
  
 
@@ -55,39 +55,13 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.224.33.125:8081/repository/lms-fe/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.16.47.141:8081/repository/lms-fe/"
 
  
 
                 }
 
 
-            }
-        }
-        stage('backend Releasing...'){
-            steps{
-                script{
-                    echo 'releasing..'
-                    def packageJSON = readJSON file: 'api/package.json'
-                    def packageJSONVersion = packageJSON.version
-                    echo "${packageJSONVersion}"
-                    sh "zip api/build-${packageJSONVersion}.zip -r api/build"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file api/build-${packageJSONVersion}.zip http://18.224.33.125:8081/repository/lms-be/"
-
- 
-
-                }
-
-
-            }
-        }
-        stage('Docker Build ') {
-            steps{
-                sh 'cd api && docker build -t srinidhi3108/api .'
-                sh 'cd webapp && docker build -t srinidhi/webapp .'
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push srinidhi3108/api'
-                sh 'docker push srinidhi3108/webapp'
             }
         }
 
@@ -103,21 +77,12 @@ pipeline {
                 
                     
                         
-                    }
-                }
+    }
+}
          
 
 
 
-
-        /*
-        stage('deploying'){
-            steps{
-                script{
-                    
-                }
-            }
-        }*/
 
 
         
