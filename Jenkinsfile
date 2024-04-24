@@ -64,7 +64,60 @@ pipeline {
 
             }
         }
+         stage('backend Releasing...'){
+            steps{
+                script{
+                    echo 'releasing..'
+                    def packageJSON = readJSON file: 'api/package.json'
+                    def packageJSONVersion = packageJSON.version
+                    echo "${packageJSONVersion}"
+                    sh "zip api/build-${packageJSONVersion}.zip -r api/build"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file api/build-${packageJSONVersion}.zip http://3.16.47.141:8081/repository/lms-be/"
 
+ 
+
+                }
+
+
+            }
+        }
+        environment {
+            dockerhub=credentials('dockerhub')
+        }
+        stage('docker building...'){
+            steps{
+                sh 'docker build -t srinidhi3108/lms .'
+            }
+        }
+        stage('Docker Login'){
+            steps{
+                echo 'Docker login'
+                sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+            }
+        }
+        stage('Docker Push'){
+            steps{
+                echo 'docker push'
+                sh 'docker push srinidhi3108/lms'
+            }
+        }
+        stage('docker rm old files'){
+            steps{
+                echo 'removing old files'
+                sh 'docker rmi -f srinidhi3108/lms'
+            }
+        }
+        stage('docker run'){
+            steps{
+                echo 'docker running..'
+                sh 'docker container run -dt --name lms-app --restart always -p 80:81 srinidhi3108/lms'
+            }
+        }
+
+
+    
+
+  
   
        
 
