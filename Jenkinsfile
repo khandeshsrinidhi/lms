@@ -1,13 +1,13 @@
 pipeline {
     agent any
     environment {
-    dockerhub=credentials('dockerhub')
+    dockerhub=credentials('docker-hub1')
     }
     
     stages {
         stage('Testing') {
             steps {
-                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://18.116.37.45:9000" -e SONAR_LOGIN="sqa_bed71a8278b1bde018dcc6d15fa4c7e812b241af"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms1'
+                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://18.118.28.179:9000" -e SONAR_LOGIN="sqa_17f73348d3969fcc57d2836ccba1b4dc4963d786"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms1'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.116.37.45:8081/repository/lms/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.118.28.179:8081/repository/lms/"
 
  
 
@@ -58,7 +58,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
                     sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.116.37.45:8081/repository/lms-fe/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://18.118.28.179:8081/repository/lms-fe/"
 
  
 
@@ -75,7 +75,7 @@ pipeline {
                     def packageJSONVersion = packageJSON.version
                     echo "${packageJSONVersion}"
                     sh "zip api/build-${packageJSONVersion}.zip -r api/build"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file api/build-${packageJSONVersion}.zip http://18.116.37.45:8081/repository/lms-be/"
+                    sh "curl -v -u admin:Ammu@3108 --upload-file api/build-${packageJSONVersion}.zip http://18.118.28.179:8081/repository/lms-be/"
 
  
 
