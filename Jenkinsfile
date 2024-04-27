@@ -111,7 +111,7 @@ pipeline {
         stage('docker run'){
             steps{
                 echo 'docker running..'
-                sh 'docker container run -dt --name lms-app --restart always -p 80:81 srinidhi3108/lms'
+                sh 'docker container run -dt --name lms-app --restart always -p 81:81 srinidhi3108/lms'
             }
         }
 
