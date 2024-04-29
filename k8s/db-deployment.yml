@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: db-container
-        image: your-database-image:tag
+        image: srinidhi3108/api:k8s
         ports:
         - containerPort: 3306
         env:
