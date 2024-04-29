@@ -87,7 +87,8 @@ pipeline {
        
         stage('docker building...'){
             steps{
-                sh 'docker build -t srinidhi3108/lms .'
+                sh 'cd api && docker build -t srinidhi3108/api .'
+                sh 'cd webapp && docker build -t srinidhi3108/webapp .'
             }
         }
         stage('Docker Login'){
@@ -99,19 +100,15 @@ pipeline {
         stage('Docker Push'){
             steps{
                 echo 'docker push'
-                sh 'docker push srinidhi3108/lms'
+                sh 'docker push srinidhi3108/api'
+                sh 'docker push srinidhi3108/webapp'
             }
         }
         stage('docker rm old files'){
             steps{
                 echo 'removing old files'
-                sh 'docker rmi -f srinidhi3108/lms'
-            }
-        }
-        stage('docker run'){
-            steps{
-                echo 'docker running..'
-                sh 'docker container run -dt --name lms-app --restart always -p 81:81 srinidhi3108/lms'
+                sh 'docker rmi -f srinidhi3108/api'
+                sh 'docker rmi -f srinidhi3108/webapp'
             }
         }
 
