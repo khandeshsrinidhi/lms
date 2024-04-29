@@ -9,7 +9,7 @@ pipeline {
 
         
         
-        stage('docker building...'){
+        /*stage('docker building...'){
             steps{
                 sh 'cd api && docker build -t srinidhi3108/api .'
                 sh 'cd webapp && docker build -t srinidhi3108/webapp .'
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('K8s Deployment'){
             steps{
-                /*sh 'echo deploying database'
+                sh 'echo deploying database'
                 sh 'cd k8s && kubectl apply -f db-deployment.yml'
                 sh 'cd k8s && kubectl apply -f db-cluster-ip-service.yml'
                 sh 'cd k8s && kubectl apply -f database-persistent-volume-claim.yml'*/
