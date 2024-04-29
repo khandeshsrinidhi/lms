@@ -113,7 +113,7 @@ pipeline {
         }
         stage('K8s Deployment'){
             steps{
-                sh 'echo deploying database'
+                /*sh 'echo deploying database'
                 sh 'cd k8s && kubectl apply -f db-deployment.yml'
                 sh 'cd k8s && kubectl apply -f db-cluster-ip-service.yml'
                 sh 'cd k8s && kubectl apply -f database-persistent-volume-claim.yml'
@@ -121,9 +121,9 @@ pipeline {
 
                 sh 'echo deploying backend'
                 sh 'cd k8s && kubectl apply -f api-deployment.yml'
-                sh 'cd k8s && kubectl apply -f api-lb-service.yml'
+                sh 'cd k8s && kubectl apply -f api-lb-service.yml'*/
 
-                
+
                 sh 'echo deploying frontend'
                 sh 'cd k8s && kubectl apply -f web-deployment.yml'
                 sh 'cd k8s && kubectl apply -f web-lb-service.yml'
