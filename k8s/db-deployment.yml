@@ -13,10 +13,10 @@ spec:
         app: db
     spec:
       containers:
-      - name: db-container
-        image: srinidhi3108/api:k8s
+      - name: postgres
+        image: postgres
         ports:
-        - containerPort: 3306
+        - containerPort: 5432
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: your-root-password
