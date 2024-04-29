@@ -1,24 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db-deployment
+  name: postgres-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: db
+      component: postgres
   template:
     metadata:
       labels:
-        app: db
+        component: postgres
     spec:
+      # volume configuration for the pod
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
       containers:
-      - name: postgres
-        image: postgres
-        ports:
-        - containerPort: 5432
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: your-root-password
-        - name: MYSQL_DATABASE
-          value: your-database-name
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          # volume mounting configuration for the container
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              value: password

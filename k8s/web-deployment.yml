@@ -1,19 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-deployment
+  name: frontend-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: web
+      component: frontend
   template:
     metadata:
       labels:
-        app: web
+        component: frontend
     spec:
       containers:
-      - name: web-container
-        image: srinidhi/webapp:k8s
-        ports:
-        - containerPort: 80
+        - name: frontend
+          image: srinidhi3108/webapp
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: MODE
+              value: production
+            - name: VITE_API_URL
+              value: api-load-balancer-service

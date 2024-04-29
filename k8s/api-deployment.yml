@@ -3,17 +3,35 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: api
+      component: api
   template:
     metadata:
       labels:
-        app: api
+        component: api
     spec:
       containers:
-      - name: api-container
-        image: srinidhi3108/api:k8s
-        ports:
-        - containerPort: 8080
+        - name: api
+          image: srinidhi3108/api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: MODE
+              value: production
+            - name: DATABASE_URL
+              value: postgresql://postgres:password@3.137.41.205:5432/postgres
+            - name: DB_HOST
+              value: postgres-cluster-ip-servicie
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: postgres
+            - name: DB_NAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: password
