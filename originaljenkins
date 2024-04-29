@@ -1,84 +1,44 @@
+// k8s Jenkins file for frontend before starting this pipeline modify .env file with backend url //
 pipeline {
-    agent any
+    agent {
+    node {
+        label 'slave'
+         }
+    }
     environment {
-    dockerhub=credentials('docker-hub1')
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
-    
-
-        
-
-        
-        
-        /*stage('docker building...'){
-            steps{
-                sh 'cd api && docker build -t srinidhi3108/api .'
-                sh 'cd webapp && docker build -t srinidhi3108/webapp .'
+    stages {
+        stage('Building the docker image') {
+            steps {
+                sh 'cd webapp && docker build -t srinidhi3108/web .'
             }
         }
-        stage('Docker Login'){
-            steps{
-                echo 'Docker login'
-                sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+        stage('Logging into dockerhub account') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
-        stage('Docker Push'){
-            steps{
-                echo 'docker push'
-                sh 'docker push srinidhi3108/api'
-                sh 'docker push srinidhi3108/webapp'
+        stage('pushing the docker image into dockerhub') 
+             {
+            steps {
+                  sh 'docker push srinidhi3108/web'
             }
         }
-        stage('docker rm old files'){
-            steps{
-                echo 'removing old files'
-                sh 'docker rmi -f srinidhi3108/api'
-                sh 'docker rmi -f srinidhi3108/webapp'
+        stage('Remove old docker images') {
+            steps {
+                 sh 'docker rmi -f srinidhi3108/web'
             }
-        }*/
-        stage('K8s Deployment'){
-            steps{
-                /*sh 'echo deploying database'
-                sh 'cd k8s && kubectl apply -f db-deployment.yml'
-                sh 'cd k8s && kubectl apply -f db-cluster-ip-service.yml'
-                sh 'cd k8s && kubectl apply -f database-persistent-volume-claim.yml'*/
-
-
-                sh 'echo deploying backend'
-                sh 'cd k8s && kubectl apply -f api-deployment.yml'
-                sh 'cd k8s && kubectl apply -f api-lb-service.yml'
-
-
-                sh 'echo deploying frontend'
+        }
+        stage('frontend deployment') {
+            steps {
                 sh 'cd k8s && kubectl apply -f web-deployment.yml'
-                sh 'cd k8s && kubectl apply -f web-lb-service.yml'
-
             }
         }
-
-
-    
-
-  
-  
-       
-
-    
-        
- 
-    
-        
-            
-                
-                    
-                        
+        stage('frontend lb-service') {
+            steps {
+                sh 'cd k8s && kubectl apply -f web-lb-service.yml'
+            }
+        }         
     }
-
-         
-
-
-
-
-
-        
-    
-
+}
