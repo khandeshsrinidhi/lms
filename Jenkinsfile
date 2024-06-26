@@ -1,160 +1,33 @@
 pipeline {
     agent any
     environment {
-    dockerhub=credentials('docker-hub1')
+    dockerhub=credentials('dockerhub')
     }
-    
-    stages {
-        stage('Testing') {
+    stages{
+        stage('Docker Build') {
             steps {
-                sh 'cd webapp && sudo docker run  --rm -e SONAR_HOST_URL="http://3.145.170.89:9000" -e SONAR_LOGIN="sqa_ee1b0f5f1de4505c44406231183142211f68c760"  -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
-            }
-        }
-
-        stage('email notification') {
+                sh 'docker build -t srinidhi3108/ecomm .'
+             }
+          }
+        stage('Docker Login') {
             steps {
-                emailext body: 'this is to notify that build job has been started',
-                subject: 'jenkins-notification',
-                to: 'khandeshsrinidhi@gmail.com',
-                attachLog: true
-            }
-        }
-
-
-        stage('Build Frontend'){
-            steps{
-                echo 'Building..'
-                sh 'cd webapp && npm install && npm run build'
-            }
-        }
-        stage('Building Backend'){
-            steps{
-                echo 'Building..'
-                sh 'cd api && npm install && npm run build'
-            }
-        }
-        stage('Releasing...'){
-            steps{
-                script{
-                    echo 'releasing..'
-                    def packageJSON = readJSON file: 'webapp/package.json'
-                    def packageJSONVersion = packageJSON.version
-                    echo "${packageJSONVersion}"
-                    sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.145.170.89:8081/repository/lms/"
-
- 
-
-                }
-
-
-            }
-        }
-        stage('frontend Releasing...'){
-            steps{
-                script{
-                    echo 'releasing..'
-                    def packageJSON = readJSON file: 'webapp/package.json'
-                    def packageJSONVersion = packageJSON.version
-                    echo "${packageJSONVersion}"
-                    sh "zip webapp/dist-${packageJSONVersion}.zip -r webapp/dist"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file webapp/dist-${packageJSONVersion}.zip http://3.145.170.89:8081/repository/lms-fe/"
-
- 
-
-                }
-
-
-            }
-        }
-         stage('backend Releasing...'){
-            steps{
-                script{
-                    echo 'releasing..'
-                    def packageJSON = readJSON file: 'api/package.json'
-                    def packageJSONVersion = packageJSON.version
-                    echo "${packageJSONVersion}"
-                    sh "zip api/build-${packageJSONVersion}.zip -r api/build"
-                    sh "curl -v -u admin:Ammu@3108 --upload-file api/build-${packageJSONVersion}.zip http://3.145.170.89:8081/repository/lms-be/"
-
- 
-
-                }
-
-
-            }
-        }
-       
-        stage('docker building...'){
-            steps{
-                sh 'cd api && docker build -t srinidhi3108/api .'
-                sh 'cd webapp && docker build -t srinidhi3108/webapp .'
-            }
-        }
-        stage('Docker Login'){
-            steps{
-                echo 'Docker login'
                 sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
             }
-        }
-        stage('Docker Push'){
-            steps{
-                echo 'docker push'
-                sh 'docker push srinidhi3108/api'
-                sh 'docker push srinidhi3108/webapp'
+          }
+        stage('Docker Push') {
+            steps {
+                sh 'docker push srinidhi3108/ecomm'
             }
-        }
-        stage('docker rm old files'){
+          }
+        stage('Remove old images') {
+            steps {
+                sh 'docker rmi -f srinidhi3108/ecomm'
+              }
+          }
+        stage('Docker run'){
             steps{
-                echo 'removing old files'
-                sh 'docker rmi -f srinidhi3108/api'
-                sh 'docker rmi -f srinidhi3108/webapp'
+                sh 'docker container run -dt --name ecomm-app --restart always -p 80:80 srinidhi3108/ecomm'
             }
-        }
-        stage('K8s Deployment'){
-            steps{
-                /*sh 'echo deploying database'
-                sh 'cd k8s && kubectl apply -f db-deployment.yml'
-                sh 'cd k8s && kubectl apply -f db-cluster-ip-service.yml'
-                sh 'cd k8s && kubectl apply -f database-persistent-volume-claim.yml'*/
-
-
-                sh 'echo deploying backend'
-                sh 'cd k8s && kubectl apply -f api-deployment.yml'
-                sh 'cd k8s && kubectl apply -f api-lb-service.yml'
-
-
-                sh 'echo deploying frontend'
-                sh 'cd k8s && kubectl apply -f web-deployment.yml'
-                sh 'cd k8s && kubectl apply -f web-lb-service.yml'
-
-            }
-        }
-
-
-    
-
-  
-  
-       
-
-    
-        
- 
-    
-        
-            
-                
-                    
-                        
-    }
+         }
+     }
 }
-         
-
-
-
-
-
-        
-    
-
